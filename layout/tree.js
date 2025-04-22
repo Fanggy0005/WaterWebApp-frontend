@@ -42,12 +42,12 @@ function displayTreeLocations(treeLocations) {
   // Create a new layer for tree markers
   window.treeMarkers = L.layerGroup().addTo(map);
 
-    // Add deep red solid markers for each tree location
+  // Add deep red solid markers for each tree location
   treeLocations.forEach(function (location) {
     L.circleMarker(location, {
       radius: 2,
-      color: '#cc3333',   // Darker red but not as dark as original
-      fillColor: '#cc3333', // Same color for fill
+      color: '#cc3333',
+      fillColor: '#cc3333',
       fillOpacity: 1
     }).addTo(window.treeMarkers);
   });
@@ -55,105 +55,106 @@ function displayTreeLocations(treeLocations) {
 
 // Update area info and render tree preview
 function updateAreaInfo(layer) {
-var bounds = layer.getBounds();
-var treeLocations = generateTreeLocations(bounds, 10);
-var treeNumber = treeLocations.length;
+  var bounds = layer.getBounds();
+  var treeLocations = generateTreeLocations(bounds, 10);
+  var treeNumber = treeLocations.length;
 
-var lengthMeters = calculateDistance(
-  bounds.getNorthEast().lat, bounds.getNorthEast().lng,
-  bounds.getNorthEast().lat, bounds.getSouthWest().lng
-);
+  var lengthMeters = calculateDistance(
+    bounds.getNorthEast().lat, bounds.getNorthEast().lng,
+    bounds.getNorthEast().lat, bounds.getSouthWest().lng
+  );
 
-var widthMeters = calculateDistance(
-  bounds.getNorthEast().lat, bounds.getNorthEast().lng,
-  bounds.getSouthWest().lat, bounds.getNorthEast().lng
-);
+  var widthMeters = calculateDistance(
+    bounds.getNorthEast().lat, bounds.getNorthEast().lng,
+    bounds.getSouthWest().lat, bounds.getNorthEast().lng
+  );
 
-var areaSquareMeters = lengthMeters * widthMeters;
-var areaRai = areaSquareMeters / 1600; // Convert to rai (1 rai = 1600 sq meters)
+  var areaSquareMeters = lengthMeters * widthMeters;
+  var areaRai = areaSquareMeters / 1600; // Convert to rai (1 rai = 1600 sq meters)
 
-var infoHtml = `
-  <h3>Selected Area Information</h3>
-  <p>Length: ${lengthMeters.toFixed(0)} meters</p>
-  <p>Width: ${widthMeters.toFixed(0)} meters</p>
-  <p>Area: ${areaSquareMeters.toFixed(0)} m² (${areaRai.toFixed(0)} rai)</p>
-  <h3>Tree Locations</h3>
-  <p>Number of trees: ${treeNumber}</p>
-`;
-document.getElementById('area-info').innerHTML = infoHtml;
+  var infoHtml = `
+    <h3>Selected Area Information</h3>
+    <p>Length: ${lengthMeters.toFixed(0)} meters</p>
+    <p>Width: ${widthMeters.toFixed(0)} meters</p>
+    <p>Area: ${areaSquareMeters.toFixed(0)} m² (${areaRai.toFixed(0)} rai)</p>
+    <h3>Tree Locations</h3>
+    <p>Number of trees: ${treeNumber}</p>
+  `;
+  document.getElementById('area-info').innerHTML = infoHtml;
 
-// Ensure both functions are called here
-function updateTreeDisplay(treeLocations, bounds) {
-    displayTreeLocations(treeLocations);  // Show trees on map
-    renderTreeCanvas(treeLocations, bounds); // Show trees in the HTML canvas preview
-}
+  // Ensure both functions are called here
+  function updateTreeDisplay(treeLocations, bounds) {
+    displayTreeLocations(treeLocations);
+    renderTreeCanvas(treeLocations, bounds);
+  }
 
-function updatePipelineDisplay(treeLocations, bounds) {
+  function updatePipelineDisplay(treeLocations, bounds) {
     setTimeout(() => {
-        renderPipelineCanvas(treeLocations, bounds);
+      renderPipelineCanvas(treeLocations, bounds);
     }, 100);
-}
+  }
 
-function updatePipelineLength(treeLocations) {
+  function updatePipelineLength(treeLocations) {
     calculatePipelineLength(treeLocations);
-}
+  }
 
-function updatePipeSystem(treeLocations) {
-  calculateSystem(treeLocations);
-}
-// Call the functions separately
-updateTreeDisplay(treeLocations, bounds);
-updatePipelineDisplay(treeLocations, bounds);
-updatePipelineLength(treeLocations);
-updatePipeSystem(treeLocations);
-calculatePipeAndFittings(treeLocations);
+  function updatePipeSystem(treeLocations) {
+    calculateSystem(treeLocations);
+  }
+
+  // Call the functions separately
+  updateTreeDisplay(treeLocations, bounds);
+  updatePipelineDisplay(treeLocations, bounds);
+  updatePipelineLength(treeLocations);
+  updatePipeSystem(treeLocations);
+  calculatePipeAndFittings(treeLocations);
 }
 
 // Function to render tree layout on canvas
 function renderTreeCanvas(treeLocations, areaBounds) {
-var canvas = document.getElementById("treeCanvas");
-var ctx = canvas.getContext("2d");
+  var canvas = document.getElementById("treeCanvas");
+  var ctx = canvas.getContext("2d");
 
-// Set canvas size
-canvas.width = 1000;  // Adjust for better scaling
-canvas.height = 800; // Keep it square
+  // Set canvas size
+  canvas.width = 1000;
+  canvas.height = 800;
 
-// Clear previous drawing
-ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Clear previous drawing
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-// Define margins for better spacing
-const margin = 20;
+  // Define margins for better spacing
+  const margin = 20;
 
-// Get area bounds
-var northEast = areaBounds.getNorthEast();
-var southWest = areaBounds.getSouthWest();
+  // Get area bounds
+  var northEast = areaBounds.getNorthEast();
+  var southWest = areaBounds.getSouthWest();
 
-// Compute scale factors
-var areaWidth = Math.abs(northEast.lng - southWest.lng);
-var areaHeight = Math.abs(northEast.lat - southWest.lat);
+  // Compute scale factors
+  var areaWidth = Math.abs(northEast.lng - southWest.lng);
+  var areaHeight = Math.abs(northEast.lat - southWest.lat);
 
-var scaleX = (canvas.width - 2 * margin) / areaWidth;
-var scaleY = (canvas.height - 2 * margin) / areaHeight;
+  var scaleX = (canvas.width - 2 * margin) / areaWidth;
+  var scaleY = (canvas.height - 2 * margin) / areaHeight;
 
-// Draw boundary box
-ctx.strokeStyle = "black";
-ctx.lineWidth = 2;
-ctx.strokeRect(margin, margin, canvas.width - 2 * margin, canvas.height - 2 * margin);
+  // Draw boundary box
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(margin, margin, canvas.width - 2 * margin, canvas.height - 2 * margin);
 
-// Draw trees
-ctx.fillStyle = "#cc3333";  // Matching color for canvas
-treeLocations.forEach(function (location) {
+  // Draw trees
+  ctx.fillStyle = "#cc3333";
+  treeLocations.forEach(function (location) {
     var x = margin + (location[1] - southWest.lng) * scaleX;
     var y = margin + (northEast.lat - location[0]) * scaleY;
     ctx.beginPath();
     ctx.arc(x, y, 3, 0, Math.PI * 2);
     ctx.fill();
-});
+  });
 }
 
 // Function to clear canvas
 function clearCanvas() {
-var canvas = document.getElementById("treeCanvas");
-var ctx = canvas.getContext("2d");
-ctx.clearRect(0, 0, canvas.width, canvas.height);
+  var canvas = document.getElementById("treeCanvas");
+  var ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
