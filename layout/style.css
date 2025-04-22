@@ -1,0 +1,234 @@
+body {
+    background-color: #a6ce8a; /* Updated background color for the entire page */
+}
+
+#map {
+    width: 90%;
+    height: 600px;
+    margin: 0 auto;
+    display: block;
+}
+
+#area-info {
+    width: 90%; /* Match width to the map */
+    margin: 10px auto; /* Center the area-info div */
+    padding: 5px; /* Adjust padding for better appearance */
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.container {
+    padding: 60px;
+}
+
+.location-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 500px;
+    margin-bottom: 10px;
+}
+
+.location-buttons button {
+    background-color: white;
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: "IBM Plex Sans Thai Looped", sans-serif;
+    font-size: 30px;
+    width: 400px;
+}
+
+.picture2 {
+    height: 30px;
+    width:  30px;
+}
+
+.title-container {
+    background-color: #f5f5f5;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #ddd;
+}
+
+.map-container {
+    position: relative;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center elements horizontally */
+    width: 100%;
+    margin-top: 20px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    background: white;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px; /* Add margin below the search box */
+}
+
+#map {
+    width: 90%;
+    height: 600px;
+    margin: 0 auto;
+    display: block;
+}
+
+#area-info {
+    width: 90%;
+    margin: 10px auto;
+    padding: 5px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    flex: 1;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.search-box button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 80%;
+    width: 300px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.dropdown div {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown div:hover {
+    background: #f1f1f1;
+}
+
+.info {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 410px;
+    font-size: 30px;
+}
+
+#map {
+    width: 90%;
+    height: 600px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* Center content styles */
+.center-content {
+    text-align: center;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.preview-section {
+    margin: 30px 0;
+}
+
+canvas {
+    display: block;
+    margin: 0 auto; /* Center the canvas horizontally */
+    width: 1000px; /* Set width to 1000px */
+    height: 800px; /* Set height to 800px */
+    background-color: #ffffff;
+}
+
+#treeCanvas, #pipelineCanvas {
+    margin: 0 auto;
+    display: block;
+}
+
+.preview-section {
+    margin: 30px auto;
+    width: 100%;
+    text-align: center;
+}
+
+button {
+    margin: 10px;
+    padding: 8px 15px;
+    display: inline-block;
+}
+
+h2 {
+    text-align: center;
+}
+
+.pipe-table {
+    width: 90%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    background-color: white;
+}
+
+.pipe-table th, .pipe-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    background-color: white;
+}
+
+.pipe-table th {
+    background-color: white;
+}
+
+.pipe-table tr:nth-child(even) {
+    background-color: white;
+}
+
+.hidden {
+    display: none;
+}
+
+.next-table {
+    margin: 10px;
+    padding: 8px 15px;
+    display: inline-block;
+}
+
+.next-button {
+    background-color: #2d6a2d;
+    color: white;
+    padding: 20px;
+    border-radius: 50%;
+    position: fixed; /* Use fixed to keep it at the bottom right */
+    bottom: 30px;
+    right: 30px;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Ensure it appears above other elements */
+}

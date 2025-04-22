@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>map locations</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="location-buttons">
+        <button><img src="C:\Users\fangn\Downloads\gpsicon2.png" alt="picture2" class="picture2">Choose your location</button>
+    </div>
+  
+  <div class="center-content">
+    <div class="map-container">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Input">
+        <button onclick="clearInput()">✖</button>
+      </div>
+      <div class="dropdown" id="dropdown">
+        <div>Menu Item</div>
+        <div>Menu Item</div>
+        <div>Menu Item</div>
+        <div>Menu Item</div>
+      </div>
+    </div>
+    
+    <div class="map-container">
+      <div id="map"></div>
+      <div id="area-info"></div>
+    </div>
+
+    <button onclick="togglePreview()">Show/Hide Previews</button>
+
+    <div id="previewSection" class="hidden">
+      <div id="treeLayout" class="preview-section">
+        <h2>Tree Layout Preview</h2>
+        <canvas id="treeCanvas"></canvas>
+        <button onclick="clearCanvas()">Clear Preview</button>
+        <button onclick="showNext()">Next</button>
+      </div>
+
+      <div id="pipelineLayout" class="preview-section hidden">
+        <h2>Pipeline Layout Preview</h2>
+        <canvas id="pipelineCanvas"></canvas>
+        <button onclick="clearPipelineCanvas()">Clear Pipeline</button>
+        <button onclick="showPrevious()">Back</button>
+        <button onclick="showNext()">Next</button>
+      </div>
+
+      <div id="pipeLength" class="preview-section hidden">
+        <h2>Calculated Pipe Length</h2>
+        <p>Pipeline Length: <span id="pipelineLength"></span> meters</p>
+        <p>Selected PE Size: <span id="peSize"></span> mm</p>
+        <p>Selected PVC Size: <span id="pvcSize"></span> inches</p>
+        <p>Total PE Loss: <span id="peLoss"></span> m</p>
+        <p>Total PVC Loss: <span id="pvcLoss"></span> m</p>
+        <p>Total Pressure Loss: <span id="totalLoss"></span> m</p>
+        <p>Pump pressure: <span id="pressurePump"></span> m</p>
+        <button onclick="showPrevious()">Back</button>
+        <button onclick="showPipeTable()" class="next-table">Next</button>
+      </div>
+
+      <!-- Add new table section -->
+      <div id="tableContainer" class="preview-section hidden">
+        <h2>Pipe and Fittings</h2>
+        <table class="pipe-table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Price Per Unit ($)</th>
+              <th>Total Price ($)</th>
+            </tr>
+          </thead>
+          <tbody id="pipeTableBody">
+          </tbody>
+        </table>
+        <button onclick="showPrevious()">Back</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="next-button" onclick="window.location.href='./page6/page6.html'">➡</div>
+  
+  <script>
+    function togglePreview() {
+      const previewSection = document.getElementById('previewSection');
+      const nextButton = document.querySelector('.next-button');
+      
+      previewSection.classList.toggle('hidden');
+      document.getElementById('treeLayout').classList.remove('hidden');
+      document.getElementById('pipelineLayout').classList.add('hidden');
+      document.getElementById('pipeLength').classList.add('hidden');
+      document.getElementById('tableContainer').classList.add('hidden');
+    
+      // Show or hide the next button based on preview visibility
+      if (!previewSection.classList.contains('hidden')) {
+        nextButton.classList.remove('hidden');
+      } else {
+        nextButton.classList.add('hidden');
+      }
+    }
+
+    function showNext() {
+      if (!document.getElementById('treeLayout').classList.contains('hidden')) {
+        document.getElementById('treeLayout').classList.add('hidden');
+        document.getElementById('pipelineLayout').classList.remove('hidden');
+      } else if (!document.getElementById('pipelineLayout').classList.contains('hidden')) {
+        document.getElementById('pipelineLayout').classList.add('hidden');
+        document.getElementById('pipeLength').classList.remove('hidden');
+      }
+    }
+
+    function showPrevious() {
+      if (!document.getElementById('tableContainer').classList.contains('hidden')) {
+        document.getElementById('tableContainer').classList.add('hidden');
+        document.getElementById('pipeLength').classList.remove('hidden');
+      } else if (!document.getElementById('pipeLength').classList.contains('hidden')) {
+        document.getElementById('pipeLength').classList.add('hidden');
+        document.getElementById('pipelineLayout').classList.remove('hidden');
+      } else if (!document.getElementById('pipelineLayout').classList.contains('hidden')) {
+        document.getElementById('pipelineLayout').classList.add('hidden');
+        document.getElementById('treeLayout').classList.remove('hidden');
+      }
+    }
+  </script>
+
+<script>
+  function toggleDropdown() {
+    const dropdown = document.getElementById('dropdown');
+    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function clearInput() {
+    const input = document.getElementById('searchInput');
+    input.value = '';
+    document.getElementById('dropdown').style.display = 'none';
+  }
+
+  document.getElementById('searchInput').addEventListener('keydown', function(event) {
+    if (event.key === ' ') {
+      clearInput();
+    }
+  });
+
+  document.getElementById('searchInput').addEventListener('focus', toggleDropdown);
+  document.getElementById('searchInput').addEventListener('blur', function() {
+    setTimeout(() => {
+      document.getElementById('dropdown').style.display = 'none';
+    }, 200); // Delay to allow click events on dropdown items
+  });
+</script>
+
+  <script src="map.js"></script>
+  <script src="pipeline.js"></script>
+  <script src="tree.js"></script>
+  <script src="length.js"></script>
+  <script src="calculate.js"></script>
+  <script src="table.js"></script>
+</body>
+</html>
