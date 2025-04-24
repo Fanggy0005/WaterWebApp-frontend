@@ -1,5 +1,5 @@
 // Function to generate tree locations symmetrically centered in the rectangle
-function generateTreeLocations(bounds, spacingMeters) {
+function generateTreeLocations(bounds, spacingMeters, layer) {
   var treeLocations = [];
   var northEast = bounds.getNorthEast();
   var southWest = bounds.getSouthWest();
@@ -25,11 +25,28 @@ function generateTreeLocations(bounds, spacingMeters) {
     for (var j = 0; j <= numTreesLng; j++) {
       var treeLat = startLat + (i * latIncrement);
       var treeLng = startLng + (j * lngIncrement);
-      treeLocations.push([treeLat, treeLng]);
+	  if(inside([treeLng, treeLat], layer.toGeoJSON().geometry.coordinates[0])) {
+		treeLocations.push([treeLat, treeLng]);
+	  }
     }
   }
 
   return treeLocations;
+}
+
+function inside(point, vs) {
+    var x = point[0], y = point[1];
+    var inside = false;
+    for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+        var xi = vs[i][0], yi = vs[i][1];
+        var xj = vs[j][0], yj = vs[j][1];
+        
+        var intersect = ((yi > y) != (yj > y))
+            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+    }
+    
+    return inside;
 }
 
 // Function to display tree locations on the map
@@ -56,7 +73,7 @@ function displayTreeLocations(treeLocations) {
 // Update area info and render tree preview
 function updateAreaInfo(layer) {
   var bounds = layer.getBounds();
-  var treeLocations = generateTreeLocations(bounds, 10);
+  var treeLocations = generateTreeLocations(bounds, 10, layer);
   var treeNumber = treeLocations.length;
 
   var lengthMeters = calculateDistance(

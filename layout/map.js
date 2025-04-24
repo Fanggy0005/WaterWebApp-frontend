@@ -15,16 +15,13 @@ var drawControl = new L.Control.Draw({
   draw: {
     // Disable all shapes except rectangle
     polyline: false,
-    polygon: false,
+    polygon: {
+		mode: 'click'
+	},
     circle: false,
     marker: false,
     circlemarker: false,
-    rectangle: {
-      shapeOptions: {
-        color: '#3388ff'
-      },
-      showArea: true
-    }
+    rectangle: false
   },
   edit: {
     featureGroup: drawnItems,
